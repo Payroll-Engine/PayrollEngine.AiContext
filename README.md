@@ -66,8 +66,3 @@ var systemPrompt = await File.ReadAllTextAsync("prompts/provider.md")
 ```powershell
 .\devops\Generate-AiContext.ps1
 ```
-
-## Related
-
-- [PayrollEngine.AiContext.Pro](https://payrollengine.org) — Regulation development context (commercial)
-- [Payroll Engine](https://payrollengine.org) — OSS payroll calculation framework
