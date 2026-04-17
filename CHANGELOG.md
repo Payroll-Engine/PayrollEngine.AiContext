@@ -19,10 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release of `PayrollEngine.AiContext`
 - `context/01-pe-overview.md` — core concepts, architecture, three roles
 - `context/05-mcp-tools.md` — MCP Server tool inventory (generated)
-- `prompts/regulator.md` — system prompt for regulation authoring
 - `prompts/provider.md` — system prompt for REST API integration
 - `prompts/automator.md` — system prompt for CLI / Client SDK automation
-- `schemas/PayrollEngine.Exchange.schema.json` — Exchange schema (generated)
+- `docs/TestScenarios.md` — integration test scenarios
+- `devops/Generate-AiContext.ps1` — context regeneration script
 
 ---
 
