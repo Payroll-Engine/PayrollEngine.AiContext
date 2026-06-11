@@ -23,6 +23,10 @@ The `PayrollConsole` CLI (`pecmd`) is the primary automation tool.
 | `TenantDelete <identifier> /trydelete` | Delete a tenant (non-fatal if not found) |
 | `PayrunEmployeeTest <file>` | Run employee payroll test (`.et.json`) |
 | `ReportExport <payroll> <report> <format>` | Export a report |
+| `AdapterSync <config>` | Run adapter sync (import employees from source system) |
+| `AdapterExport <config>` | Run adapter export (push results to target system) |
+| `AdapterForecast <config>` | Run adapter forecast payrun |
+| `AdapterTest <config>` | Test adapter connection |
 
 ### Command files (`.pecmd`)
 Commands are combined in `.pecmd` files — one command per line:
@@ -68,6 +72,27 @@ Key patterns:
 - Run tests with `PayrunEmployeeTest`
 - Clean up with `TenantDelete` after test run
 - Test commands in bulk `.pecmd` files must **not** use `/wait` — the runner pauses only on failure
+
+## Adapter Sync (Bundle-Based)
+
+The adapter framework supports two provider patterns:
+
+| Pattern | Interface | Engine | Use case |
+|:--------|:----------|:-------|:---------|
+| **Bundle** (preferred) | `IPayrollBundleSource` | `BundleSyncEngine` | Typed DTO providers (Personio, Payfit, Silae, SuccessFactors) |
+| **FieldMappings** (legacy) | `IPayrollImportSource` | `SyncEngine` | Dynamic-field providers (AFAS, D365, Odoo, PapayaGlobal, Sage, Workday) |
+
+Bundle providers map source data into typed Global Case DTOs (`EmployeeImportBundle`) — the framework resolves country-specific case names via `GC.*` cluster tags at runtime.
+
+```bash
+# Run adapter sync (auto-detects bundle vs. legacy provider)
+pecmd AdapterSync config.json
+
+# Test connection only
+pecmd AdapterTest config.json
+```
+
+The `AdapterSyncCommand` dynamically detects whether the provider implements `IPayrollBundleSource` (uses `BundleSyncEngine`) or `IPayrollImportSource` (uses legacy `SyncEngine`).
 
 ## Output format
 

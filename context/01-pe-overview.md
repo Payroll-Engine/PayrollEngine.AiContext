@@ -59,6 +59,33 @@ pecmd CLI
   └── Exchange import, test execution, report export
 ```
 
+## Global Cases
+
+Global Cases provide a standardised, country-agnostic integration interface for data onboarding. Each payroll domain (identity, employment, salary, tax, social security, banking, …) is assigned a **cluster tag** prefixed with `GC.`:
+
+| Cluster Tag | Domain | Example Fields |
+|:------------|:-------|:---------------|
+| `GC.Employee` | Identity / personal data | NationalId, TaxId, DateOfBirth, Gender |
+| `GC.Employment` | Contract, dates, hours | StartDate, EndDate, WeeklyHours, EmploymentType |
+| `GC.Salary` | Remuneration | MonthlySalary, HourlyRate, PayType |
+| `GC.Tax` | Tax withholding | TaxClass, Religion, TaxCode |
+| `GC.SocialSecurity` | Social insurance | InsuranceType, HealthInsuranceMandatory |
+| `GC.Banking` | Bank account | Iban, AccountNumber, SortCode |
+| `GC.Pension` | Pension / bAV | PensionScheme, EmployeeContribution |
+| `GC.Time` | Period hours | OvertimeHours, NightHours, SickDays |
+| `GC.Benefits` | Benefits in kind | CompanyCar, MealVouchers |
+| `GC.Garnishment` | Court orders | GarnishmentAmount, GarnishmentType |
+| `GC.Termination` | Exit / ETP | TerminationDate, SeverancePay |
+| `GC.Leave` | Leave entitlements | VacationDays, LeaveBalance |
+
+### How it works
+
+1. **Regulation authors** tag their country-specific cases with `GC.*` clusters (e.g. Germany's `Arbeitnehmer` case carries `clusters: ["GC.Employee"]`).
+2. **Adapters** write data using the domain cluster tags — the framework resolves `GC.Employee` to the country-specific case name (`DE.Arbeitnehmer`, `UK.PersonalDetails`, etc.) at runtime.
+3. **MCP/API consumers** query available cases per domain via `clusterSetName=GlobalCase` or the `build_case` tool.
+
+This allows the **same adapter code** to onboard employees into any country regulation without knowing the target case names.
+
 ## MCP Server Access Control
 
 The MCP Server exposes tools filtered by two independent dimensions:
